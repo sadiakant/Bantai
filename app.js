@@ -3,7 +3,7 @@ const parsbot = new Discord.Client();
 
 const prefix = '$';
 
-parsbot.login('discordtoken');
+parsbot.login('');
 
 parsbot.on('ready', () => {
 
@@ -24,6 +24,21 @@ parsbot.on ('message' , message => {
     else if (msg === prefix + 'HI') {
 
         message.channel.send('Hi ' + sender);
+    }
+
+    else if (msg === prefix + 'HELLO') {
+
+        message.channel.send('Hi ' + sender);
+    }
+
+    else if (msg === prefix + 'MERHABA') {
+
+        message.channel.send('Merhaba ' + sender);
+    }
+
+    else if (msg === prefix + 'SELAM') {
+
+        message.channel.send('Selam ' + sender);
     }
 
 });
