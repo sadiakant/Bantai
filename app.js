@@ -4,7 +4,7 @@ const request = require('request');
 const prefix = '$';
 
 
-parsbot.login('');
+parsbot.login('NDA5NDI5MzkzNDU1NDQ4MDY0.DVja-w.bgfkuSYmcMe-DOjg_JUcYntnJDU');
 
 parsbot.on('ready', () => {
 
@@ -42,4 +42,24 @@ parsbot.on ('message' , message => {
         message.channel.send('Selam ' + sender);
     }
 
+    else if (msg.startsWith(prefix + 'PRICE')) {
+ 
+        let coinname = msg.replace(prefix + 'PRICE ','');
+            request('https://api.coinmarketcap.com/v1/ticker/' + coinname,
+                function(error,res,body)
+                {
+                var obj = JSON.parse(body);
+                if(obj[0] === undefined)
+                {   
+                    console.log("Invalid Coin ID");
+                    message.channel.send('Invalid Coin Name');
+                }
+                else
+                {
+                    console.log(obj[0]);
+                    let value = coinname + " : Current Price " + obj[0].price_usd + " | 24hr Percentage Change " + obj[0].percent_change_24h;
+                    message.channel.send(value);
+                }
+            });
+    }
 });
