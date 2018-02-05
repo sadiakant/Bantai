@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const parsbot = new Discord.Client();
-
+const request = require('request');
 const prefix = '$';
+
 
 parsbot.login('');
 
@@ -28,7 +29,7 @@ parsbot.on ('message' , message => {
 
     else if (msg === prefix + 'HELLO') {
 
-        message.channel.send('Hi ' + sender);
+        message.channel.send('Hello ' + sender);
     }
 
     else if (msg === prefix + 'MERHABA') {
@@ -42,4 +43,3 @@ parsbot.on ('message' , message => {
     }
 
 });
-
