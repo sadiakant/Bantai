@@ -1,10 +1,11 @@
 const Discord = require('discord.js');
 const parsbot = new Discord.Client();
 const request = require('request');
+const steemjs = require('steem');
 const prefix = '$';
 
 
-parsbot.login('NDA5NDI5MzkzNDU1NDQ4MDY0.DVja-w.bgfkuSYmcMe-DOjg_JUcYntnJDU');
+parsbot.login('NDA5NDI5MzkzNDU1NDQ4MDY0.DVur1A.J0zBhH11G9x9ggNl-7neRjyXc-8');
 
 parsbot.on('ready', () => {
 
@@ -16,6 +17,7 @@ parsbot.on ('message' , message => {
 
     let msg = message.content.toUpperCase();
     let sender = message.author;
+    let msgorg = message.content;
 
     if (msg === prefix + 'PING') {
 
@@ -62,4 +64,25 @@ parsbot.on ('message' , message => {
                 }
             });
     }
+
+    else if (msgorg.startsWith(prefix + 'rep')) {
+        let accountname = msgorg.replace(prefix + 'rep ','');
+
+            steemjs.api.getAccounts([accountname],
+                function(err,result)
+                {
+                    if(result["0"] === undefined)
+                {
+                    console.log("Invalid Acccount ID");
+                    message.channel.send('Invalid Acccount ID');
+                }
+                else
+                {
+                    console.log(result["0"])
+                    let value = accountname + " Reputation Score: " + (steemjs.formatter.reputation(result["0"].reputation));
+                    message.channel.send(value);
+                }
+                });
+    }
+
 });
