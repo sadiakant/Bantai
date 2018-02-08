@@ -5,7 +5,7 @@ const steemjs = require('steem');
 const prefix = '$';
 
 
-parsbot.login('NDA5NDI5MzkzNDU1NDQ4MDY0.DVur1A.J0zBhH11G9x9ggNl-7neRjyXc-8');
+parsbot.login('');
 
 parsbot.on('ready', () => {
 
@@ -59,8 +59,13 @@ parsbot.on ('message' , message => {
                 else
                 {
                     console.log(obj[0]);
-                    let value = coinname + " : Current Price " + obj[0].price_usd + " | 24hr Percentage Change " + obj[0].percent_change_24h;
-                    message.channel.send(value);
+                    const embed = new Discord.RichEmbed()
+                    .setThumbnail('https://files.coinmarketcap.com/static/img/coins/64x64/' + coinname.toLowerCase() + '.png')
+                    .setColor(0x00AE86)
+                    .setAuthor(obj[0].name + ' (' + obj[0].symbol + ')',' ')
+                    .addField('Current Price (USD)',obj[0].price_usd +' USD ('+ obj[0].percent_change_24h + '%)',true)
+                    .addField('Current Price (BTC)',obj[0].price_btc +' BTC ('+ obj[0].percent_change_24h + '%)',true);
+                    message.channel.sendEmbed(embed);
                 }
             });
     }
@@ -81,6 +86,28 @@ parsbot.on ('message' , message => {
                     console.log(result["0"])
                     let value = accountname + " Reputation Score: " + (steemjs.formatter.reputation(result["0"].reputation));
                     message.channel.send(value);
+                }
+                });
+    }
+
+    else if (msgorg.startsWith(prefix + 'vpower')) {
+        let accountname = msgorg.replace(prefix + 'vpower ','');
+
+            steemjs.api.getAccounts([accountname],
+                function(err,result)
+                {
+                    if(result["0"] === undefined)
+                {
+                    console.log("Invalid Acccount ID");
+                    message.channel.send('Invalid Acccount ID');
+                }
+                else
+                {
+                    console.log(result[0]);
+                    var secondsago = (new Date - new Date(result[0].last_vote_time + "Z")) / 1000;
+                    var vpow = result[0].voting_power + (10000 * secondsago / 432000);
+                    vpow = accountname + " Voting Power: " + Math.min(vpow / 100, 100).toFixed(2);
+                    message.channel.send(vpow);
                 }
                 });
     }
