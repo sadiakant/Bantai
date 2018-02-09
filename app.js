@@ -2,6 +2,7 @@ const Discord = require('discord.js');
 const parsbot = new Discord.Client();
 const request = require('request');
 const steemjs = require('steem');
+const moment = require('moment');
 const prefix = '$';
 
 
@@ -58,7 +59,6 @@ parsbot.on ('message' , message => {
                 }
                 else
                 {
-                    console.log(obj[0]);
                     const embed = new Discord.RichEmbed()
                     .setThumbnail('https://files.coinmarketcap.com/static/img/coins/64x64/' + coinname.toLowerCase() + '.png')
                     .setColor(0x00AE86)
@@ -83,7 +83,6 @@ parsbot.on ('message' , message => {
                 }
                 else
                 {
-                    console.log(result["0"])
                     let value = accountname + " Reputation Score: " + (steemjs.formatter.reputation(result["0"].reputation));
                     message.channel.send(value);
                 }
@@ -103,7 +102,6 @@ parsbot.on ('message' , message => {
                 }
                 else
                 {
-                    console.log(result[0]);
                     var secondsago = (new Date - new Date(result[0].last_vote_time + "Z")) / 1000;
                     var vpow = result[0].voting_power + (10000 * secondsago / 432000);
                     vpow = accountname + " Voting Power: " + Math.min(vpow / 100, 100).toFixed(2);
@@ -111,5 +109,62 @@ parsbot.on ('message' , message => {
                 }
                 });
     }
+    
+    else if (msgorg.startsWith(prefix + 'accreated')) {
+        let accountname = msgorg.replace(prefix + 'accreated ','');
 
+            steemjs.api.getAccounts([accountname],
+                function(err,result)
+                {
+                    if(result["0"] === undefined)
+                {
+                    console.log("Invalid Acccount ID");
+                    message.channel.send('Invalid Acccount ID');
+                }
+                else
+                {
+                    var today = moment(Date.now());
+                    var accountcreated = moment(result[0].created);
+                    var accountcreateddays = today.diff(accountcreated, 'days');
+
+                    var acdays = (accountname + " Account Created " + accountcreateddays + ' days ago');
+                    message.channel.send(acdays);
+                }
+                });
+    }
+
+    else if (msgorg.startsWith(prefix + 'accspower')) {
+        let accountname = msgorg.replace(prefix + 'accspower ','');
+
+            steemjs.api.getAccounts([accountname],
+                function(err,result)
+                {
+                    if(result["0"] === undefined)
+                {
+                    console.log("Invalid Acccount ID");
+                    message.channel.send('Invalid Acccount ID');
+                }
+                else
+                {
+                
+                var vesting_shares, delegated_vesting_shares, received_vesting_shares, total_vesting_shares , total_vesting_fund_steem=null;
+                vesting_shares = result[0].vesting_shares;
+                delegated_vesting_shares = result[0].delegated_vesting_shares;
+                received_vesting_shares = result[0].received_vesting_shares;
+
+            steemjs.api.getDynamicGlobalProperties(function(err, gresult) {
+
+                total_vesting_shares=gresult.total_vesting_shares;
+                total_vesting_fund=gresult.total_vesting_fund_steem;
+
+
+                var steem_power = steemjs.formatter.vestToSteem(vesting_shares, total_vesting_shares, total_vesting_fund);
+                var delegated_steem_power = steemjs.formatter.vestToSteem((received_vesting_shares.split(' ')[0]-delegated_vesting_shares.split(' ')[0])+' VESTS', total_vesting_shares, total_vesting_fund);
+
+                    var acspower = (accountname + " Steem Power " + (steem_power+delegated_steem_power).toFixed(2) + ' SP ' + '(' + steem_power.toFixed(2) + ' ' + delegated_steem_power.toFixed(2) + ')');
+                    message.channel.send(acspower);
+                })
+            }
+        });
+    }
 });
