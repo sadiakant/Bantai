@@ -44,7 +44,7 @@ parsbot.on ('message' , message => {
 
         message.channel.send('Selam ' + sender);
     }
-
+    
     else if (msg.startsWith(prefix + 'PRICE')) {
  
         let coinname = msg.replace(prefix + 'PRICE ','');
@@ -167,4 +167,51 @@ parsbot.on ('message' , message => {
             }
         });
     }
+
+    else if (msgorg.startsWith(prefix + 'accfow')) {
+        let accountname = msgorg.replace(prefix + 'accfow ','');
+
+            steemjs.api.getFollowCountAsync((accountname),
+                function(err,fresult)
+                {
+                if(fresult === undefined)
+                {
+                    console.log("Invalid Acccount ID");
+                    message.channel.send('Invalid Acccount ID');
+                }
+                else
+                {
+                var follower_count = fresult.follower_count;
+                var following_count = fresult.following_count;
+                
+                var accfow = (accountname + " Follower:" + (follower_count) + ' Following:' + following_count);
+                message.channel.send(accfow);
+
+                }
+            });
+        }
+
+        else if (msgorg.startsWith(prefix + 'accltvote')) {
+
+            let accountname = msgorg.replace(prefix + 'accltvote ','');
+
+            steemjs.api.getAccounts([accountname],
+                function(err,result)
+                {
+                    if(result["0"] === undefined)
+                {
+                    console.log("Invalid Acccount ID");
+                    message.channel.send('Invalid Acccount ID');
+                }
+                else
+                {
+                    var lastvote = moment(result[0].last_vote_time).add('hours', 3);
+                    var lastvotemes = accountname + " Last Vote:" + (lastvote.format("YYYY-MM-DD HH:mm"));
+                    message.channel.send(lastvotemes);
+                }
+            });
+        }
+
+    
+            
 });
