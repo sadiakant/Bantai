@@ -1,0 +1,27 @@
+{
+  "name": "parsbot",
+  "version": "1.0.0",
+  "description": "The parsbot is a discord bot.",
+  "main": "app.js",
+  "dependencies": {
+    "discord.js": "^11.3.0",
+    "moment": "^2.20.1",
+    "steem": "^0.7.1",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pars11/parsbot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pars11/parsbot/issues"
+  },
+  "homepage": "https://github.com/pars11/parsbot#readme"
+}

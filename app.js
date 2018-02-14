@@ -6,7 +6,7 @@ const moment = require('moment');
 const prefix = '$';
 
 
-parsbot.login('');
+parsbot.login('NDA5NDI5MzkzNDU1NDQ4MDY0.DWRgqg.-UgMgqPrYHz-k6gA8d9971EkgOc');
 
 parsbot.on('ready', () => {
 
