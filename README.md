@@ -1,6 +1,6 @@
 # Parsbot
 ### What is the project about?
-Parsbot is a discord bot for steem account datas and query all the coin prices. Parsbot has a discord bot account for incoming messages and send messages with bot token. It currently has 13  commands, of course, according to this desire and development, it may increase or decrease in the future.
+Parsbot is a discord bot query all the coin prices. Parsbot has a discord bot account for incoming messages and send messages with bot token. It currently has 13  commands, of course, according to this desire and development, it may increase or decrease in the future.
 
 ### Technology Stack
 * Nodejs
@@ -10,7 +10,6 @@ Parsbot is a discord bot for steem account datas and query all the coin prices. 
 * [Discord.js](https://discord.js.org/#/)
 * [Request.js](https://www.npmjs.com/package/request)
 * [Moment.js](https://momentjs.com/docs/)
-* [Steem.js](https://github.com/steemit/steem-js)
 * [Coinmarketcap API](https://coinmarketcap.com/api/)
 
 
@@ -96,8 +95,6 @@ Clone:
 ```git clone https://github.com/pars11/parsbot```
 
 You need to enter your bot token in the "parsbot.login('');"  section in the app.js file.
-
-More info discord app and bot token. [Tutorial 1](https://utopian.io/utopian-io/@pars11/parsbot-or-discord-bot-tutorial-node-js-or-part-1)
 
 And Run.
 
