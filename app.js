@@ -10,7 +10,7 @@ parsbot.login('');
 
 parsbot.on('ready', () => {
 
-    console.log('Pars Bot started.')
+    console.log('Bantai Bot started.')
 
 });
 
